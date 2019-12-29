@@ -29,7 +29,7 @@
             </van-cell-group>
         </van-row>
         <van-row type="flex" justify="center" style="margin-top:2rem;">
-            <van-button round type="primary" style="width:90%">登录</van-button>
+            <van-button round type="primary" style="width:90%">登&nbsp;&nbsp;录</van-button>
         </van-row>
     </div>
 </template>
