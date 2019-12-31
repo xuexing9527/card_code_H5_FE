@@ -38,7 +38,7 @@
 
 <script>
     import { Toast } from 'vant';
-    // import * as api from '../api/home-api'
+    import * as api from '../api/home-api'
 
     export default {
         name: 'Index',
@@ -80,24 +80,23 @@
                     })
                     return
                 }
-                vm.$router.push({ path: '/detail' })
-                // api.login(params).then((res) => {
-                //     const { data } = res
-                //     const { code, msg } = data
-                //     if (code === 0) {
-                //         const { token } = msg
-                //         localStorage.setItem('token', token)
-                //         vm.$router.push({ path: '/detail' })
-                //     } else {
-                //         Toast({
-                //             message: msg,
-                //         })
-                //     }
-                // }).catch((err) => {
-                //     Toast({
-                //         message: err,
-                //     })
-                // })
+                api.login(params).then((res) => {
+                    const { data } = res
+                    const { code, msg } = data
+                    if (code === 0) {
+                        const { token } = msg
+                        localStorage.setItem('token', token)
+                        vm.$router.push({ path: '/detail' })
+                    } else {
+                        Toast({
+                            message: msg,
+                        })
+                    }
+                }).catch((err) => {
+                    Toast({
+                        message: err,
+                    })
+                })
             }
         }
     }
