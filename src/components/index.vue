@@ -1,7 +1,7 @@
 <template>
     <div style="background-color: #fff;height: 100vh">
         <div style="margin: 2rem 0;display: flex;justify-content: center">
-            <img src="../assets/images/logo.jpg" style="width: 2.5rem;">
+            <img src="../assets/images/logo.jpg" style="width: 2.5rem;height: 2.5rem">
         </div>
         <van-row type="flex" justify="center">
             <van-cell-group class="field">
