@@ -139,18 +139,21 @@
                             const { data } = res
                             const { code, msg } = data
                             if (code === 0) {
-                                vm.add_time = msg.add_time
-                                vm.tracking_number = msg.tracking_number
-                                vm.isEdit = !msg.ship_status
-                                vm.isQuery = [1, 2].includes(msg.ship_status)
-                                vm.active = msg.ship_status
-                                vm.list = [
-                                    {
-                                        name:msg.consignee,
-                                        tel:msg.phone_number,
-                                        address: msg.address
-                                    }
-                                ]
+                                Toast.success('兑换成功')
+                                setTimeout(()=> {
+                                    vm.add_time = msg.add_time
+                                    vm.tracking_number = msg.tracking_number
+                                    vm.isEdit = !msg.ship_status
+                                    vm.isQuery = [1, 2].includes(msg.ship_status)
+                                    vm.active = msg.ship_status
+                                    vm.list = [
+                                        {
+                                            name:msg.consignee,
+                                            tel:msg.phone_number,
+                                            address: msg.address
+                                        }
+                                    ]
+                                },2000)
                             } else {
                                 Toast({
                                     message: msg
