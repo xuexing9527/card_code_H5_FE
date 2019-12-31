@@ -80,10 +80,15 @@
                     })
                     return
                 }
+                Toast.loading({
+                    message: '登录中...',
+                    forbidClick: true
+                })
                 api.login(params).then((res) => {
                     const { data } = res
                     const { code, msg } = data
                     if (code === 0) {
+                        Toast.clear()
                         const { token } = msg
                         localStorage.setItem('token', token)
                         vm.$router.push({ path: '/detail' })
