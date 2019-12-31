@@ -96,7 +96,8 @@
                 const { data } = res
                 const { code, msg } = data
                 if (code === 0) {
-                    vm.detail = msg
+                    vm.add_time = msg.add_time
+                    vm.tracking_number = msg.tracking_number
                     vm.isEdit = !msg.ship_status
                     vm.isQuery = [1, 2].includes(msg.ship_status)
                     // active为订单的状态
@@ -138,7 +139,8 @@
                             const { data } = res
                             const { code, msg } = data
                             if (code === 0) {
-                                vm.detail = msg
+                                vm.add_time = msg.add_time
+                                vm.tracking_number = msg.tracking_number
                                 vm.isEdit = !msg.ship_status
                                 vm.isQuery = [1, 2].includes(msg.ship_status)
                                 vm.active = msg.ship_status
