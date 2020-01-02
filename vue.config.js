@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 module.exports  = {
     devServer: {
         proxy: {
@@ -12,6 +13,15 @@ module.exports  = {
             'vue': 'Vue',
             'vue-router': 'VueRouter',
             'vant': 'vant'
-        }
+        },
+        entry: {
+            common: './src/assets/js/area.js',
+            app: './src/main.js'
+        },
+        plugins: [
+            new webpack.optimization.splitChunks({
+                name: 'common'
+            })
+        ]
     }
 }
