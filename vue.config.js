@@ -6,5 +6,12 @@ module.exports  = {
                 changeOrigin: true,
             }
         }
+    },
+    configureWebpack: {
+        externals: {         // 使用CDN数据
+            'vue': 'Vue',
+            'vue-router': 'VueRouter',
+            'vant': 'vant'
+        }
     }
 }

@@ -41,23 +41,11 @@
             <van-notice-bar
                     text="注：新鲜牛肉和土鸡，下单一周之后发货，请耐心等待。"
             />
-            <!--<van-divider-->
-                    <!--content-position="left"-->
-                    <!--:style="{ color: '#333', borderColor: '#333', padding: '0 0.32rem' }"-->
-            <!--&gt;-->
-               <!--收货地址-->
-            <!--</van-divider>-->
             <van-address-list
                     :list="list"
                     :switchable='switchable'
                     style="margin-top: 0.32rem"
             />
-            <!--<van-divider-->
-                    <!--content-position="left"-->
-                    <!--:style="{ color: '#333', borderColor: '#333', padding: '0 0.32rem' }"-->
-            <!--&gt;-->
-               <!--订单状态-->
-            <!--</van-divider>-->
             <van-panel title="下单时间" :desc="add_time" style="margin:0.32rem 0.32rem 0">
             </van-panel>
             <van-steps :active="active" style="margin:0 0.32rem">
@@ -92,7 +80,7 @@
         },
         beforeCreate () {
             const vm = this
-           api.detail().then((res) => {
+            api.detail().then((res) => {
                 const { data } = res
                 const { code, msg } = data
                 if (code === 0) {
@@ -177,7 +165,7 @@
 
             },
             onClickLeft () {
-                this.$router.go(-1)
+                this.$router.push({ path: '/' })
             }
         }
     }
