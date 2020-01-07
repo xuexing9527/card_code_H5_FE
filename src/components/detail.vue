@@ -57,6 +57,10 @@
                         label="详细地址"
                         placeholder="街道门牌、 楼层房间号等信息"
                         clearable
+                        type="textarea"
+                        rows="1"
+                        autosize
+                        maxlength="50"
                 />
                 <van-field
                         v-model="note"
@@ -66,6 +70,7 @@
                         type="textarea"
                         clearable
                         placeholder="请输入留言"
+                        maxlength="50"
                 />
             </van-cell-group>
             <!--兑换按钮-->
@@ -256,10 +261,16 @@
                     note: vm.note
                 }
 
+                Toast.loading({
+                    message: '加载中...',
+                    forbidClick: true
+                })
+
                 api.add(params).then((res) => {
                     const { data } = res
                     const { code, msg } = data
                     if (code === 0) {
+                        Toast.clear()
                         api.detail().then((res) => {
                             const { data } = res
                             const { code, msg } = data
