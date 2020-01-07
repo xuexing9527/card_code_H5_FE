@@ -15,7 +15,7 @@
                 left-icon="chat-o"
         />
         <!--未填写订单地址显示界面-->
-        <div>
+        <div v-if="isEdit">
             <!--通知信息-->
             <van-notice-bar
                     text="注：1、地址提示：填写详细地址，避免电话未接听配送不成功，快递退回带来不必要的麻烦。2、兑换商品为：五斤精品牛肉+一只散养土鸡。3、收货前，请妥善保存卡号密码，以便查询运单号等订单详情。"
@@ -33,7 +33,7 @@
                         v-model="name"
                         label="姓名"
                         placeholder="收货人姓名"
-                        clearable="true"
+                        clearable
                         autofocus
                 />
                 <van-field
@@ -46,13 +46,12 @@
                         clearable
                 />
                 <van-field
-                        v-model="tel"
+                        v-model="address"
                         readonly
                         label="地区"
                         placeholder="请选择省 / 市 / 区"
                         @click="showPopup"
                 />
-                <!--<van-cell is-link @click="showPopup" title="地区">{{address}}</van-cell>-->
                 <van-field
                         v-model="addressDetail"
                         label="详细地址"
@@ -89,25 +88,48 @@
             </van-popup>
         </div>
         <!--已填写订单地址显示界面-->
-        <!--<div v-if="isQuery">-->
-        <!--<van-notice-bar-->
-        <!--text="注：新鲜牛肉和土鸡，下单一周之后发货，请耐心等待。"-->
-        <!--/>-->
-        <!--<van-address-list-->
-        <!--:list="list"-->
-        <!--:switchable='switchable'-->
-        <!--style="margin-top: 0.32rem"-->
-        <!--/>-->
-        <!--<van-panel title="下单时间" :desc="add_time" style="margin:0.32rem 0.32rem 0">-->
-        <!--</van-panel>-->
-        <!--<van-steps :active="active" style="margin:0 0.32rem">-->
-        <!--<van-step>买家下单</van-step>-->
-        <!--<van-step>商家接单</van-step>-->
-        <!--<van-step>商家发货</van-step>-->
-        <!--</van-steps>-->
-        <!--<van-panel v-if="active==2"  title="韵达快递" :desc="tracking_number" style="margin:0.32rem 0.32rem 0">-->
-        <!--</van-panel>-->
-        <!--</div>-->
+        <div v-if="isQuery">
+            <van-notice-bar
+                    text="注：新鲜牛肉和土鸡，下单一周之后发货，请耐心等待。"
+            />
+            <van-cell-group style="margin: 0.32rem 0.32rem;border-radius:5%;">
+                <van-field
+                        v-model="detail.consignee"
+                        label="姓名"
+                        readonly
+                />
+                <van-field
+                        v-model="detail.phone_number"
+                        label="电话"
+                        readonly
+                />
+                <van-field
+                        v-model="detail.address"
+                        type="textarea"
+                        label="地址"
+                        readonly
+                        rows="1"
+                        autosize
+                />
+                <van-field
+                        v-model="detail.note"
+                        rows="1"
+                        autosize
+                        label="留言"
+                        type="textarea"
+                        readonly
+                />
+            </van-cell-group>
+            <van-panel title="下单时间" :desc="detail.add_time" style="margin:0 0.32rem">
+            </van-panel>
+            <van-steps :active="detail.ship_status" style="margin:0 0.32rem">
+                <van-step>买家下单</van-step>
+                <van-step>商家接单</van-step>
+                <van-step>商家发货</van-step>
+            </van-steps>
+            <van-panel v-if="detail.ship_status==2"  title="顺丰快递" :desc="detail.tracking_number" style="margin: 0 0.32rem">
+            </van-panel>
+        </div>
     </div>
 </template>
 
@@ -121,19 +143,14 @@
             return {
                 name: '',
                 tel: '',
-                address: '请选择省 / 市 / 区',
+                address: '',
                 addressDetail: '',
                 note: '',
                 areaList,
-                active: 1,
                 isEdit: false,
                 isQuery: false,
-                list: [],
-                add_time: '',
-                tracking_number: '',
-                switchable: true,
                 show: false,
-
+                detail: {}
             }
         },
         beforeCreate () {
@@ -142,20 +159,9 @@
                 const { data } = res
                 const { code, msg } = data
                 if (code === 0) {
-                    vm.add_time = msg.add_time
-                    vm.tracking_number = msg.tracking_number
+                    vm.detail = msg
                     vm.isEdit = !msg.ship_status
                     vm.isQuery = [1, 2].includes(msg.ship_status)
-                    // active为订单的状态
-                    vm.active = msg.ship_status
-                    // list为地址的信息
-                    vm.list = [
-                        {
-                            name:msg.consignee,
-                            tel:msg.phone_number,
-                            address: msg.address
-                        }
-                    ]
                 } else {
                     Toast({
                         message: msg
@@ -229,7 +235,7 @@
                     }
                 }
 
-                if (vm.address === '请选择省 / 市 / 区') {
+                if (vm.address === '') {
                     Toast({
                         message: '请选择省市区'
                     })
@@ -249,6 +255,7 @@
                     address: vm.address+vm.addressDetail,
                     note: vm.note
                 }
+
                 api.add(params).then((res) => {
                     const { data } = res
                     const { code, msg } = data
@@ -257,20 +264,11 @@
                             const { data } = res
                             const { code, msg } = data
                             if (code === 0) {
-                                Toast.success('兑换成功')
+                                Toast.success('兑换成功') //默认显示时间为2000ms
                                 setTimeout(()=> {
-                                    vm.add_time = msg.add_time
-                                    vm.tracking_number = msg.tracking_number
+                                    vm.detail = msg
                                     vm.isEdit = !msg.ship_status
                                     vm.isQuery = [1, 2].includes(msg.ship_status)
-                                    vm.active = msg.ship_status
-                                    vm.list = [
-                                        {
-                                            name:msg.consignee,
-                                            tel:msg.phone_number,
-                                            address: msg.address
-                                        }
-                                    ]
                                 },2000)
                             } else {
                                 Toast({
@@ -302,13 +300,4 @@
 </script>
 
 <style scoped>
-    .van-address-item__edit {
-        display: none;
-    }
-    .van-address-list {
-        padding: 0 0.32rem;
-    }
-    .van-address-list__bottom {
-        display: none;
-    }
 </style>
