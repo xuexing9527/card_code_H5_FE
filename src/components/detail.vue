@@ -14,6 +14,7 @@
                 style="margin-bottom: 0.32rem;"
                 left-icon="chat-o"
         />
+
         <!--未填写订单地址显示界面-->
         <div v-if="isEdit">
             <!--通知信息-->
@@ -28,13 +29,14 @@
                 收货地址填写
             </van-divider>
             <!--地址填写-->
-            <van-cell-group style="margin: 0 0.32rem;border-radius:5%;">
+            <van-cell-group style="margin: 0 0.32rem;border-radius: 0.21rem">
                 <van-field
                         v-model="name"
                         label="姓名"
                         placeholder="收货人姓名"
                         clearable
                         autofocus
+                        class="top-radius"
                 />
                 <van-field
                         v-model="tel"
@@ -71,6 +73,7 @@
                         clearable
                         placeholder="请输入留言"
                         maxlength="50"
+                        class="bottom-radius"
                 />
             </van-cell-group>
             <!--兑换按钮-->
@@ -82,7 +85,7 @@
             <van-popup
                     v-model="show"
                     position="bottom"
-                    :style="{ height: '50%' }"
+                    :style="{ height: '30%' }"
             >
                 <van-area
                         :area-list="areaList"
@@ -97,11 +100,12 @@
             <van-notice-bar
                     text="注：新鲜牛肉和土鸡，下单一周之后发货，请耐心等待。"
             />
-            <van-cell-group style="margin: 0.32rem 0.32rem;border-radius:5%;">
+            <van-cell-group style="margin: 0.32rem 0.32rem;border-radius:0.21rem;">
                 <van-field
                         v-model="detail.consignee"
                         label="姓名"
                         readonly
+                        class="top-radius"
                 />
                 <van-field
                         v-model="detail.phone_number"
@@ -123,6 +127,7 @@
                         label="留言"
                         type="textarea"
                         readonly
+                        class="bottom-radius"
                 />
             </van-cell-group>
             <van-panel title="下单时间" :desc="detail.add_time" style="margin:0 0.32rem">
@@ -311,4 +316,12 @@
 </script>
 
 <style scoped>
+    .top-radius {
+        border-top-left-radius: 0.21rem;
+        border-top-right-radius: 0.21rem;
+    }
+    .bottom-radius {
+        border-bottom-left-radius: 0.21rem;
+        border-bottom-right-radius: 0.21rem;
+    }
 </style>
