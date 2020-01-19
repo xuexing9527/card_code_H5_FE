@@ -137,7 +137,7 @@
                 <van-step>商家接单</van-step>
                 <van-step>商家发货</van-step>
             </van-steps>
-            <van-panel v-if="detail.ship_status==2"  title="顺丰快递" :desc="detail.tracking_number" style="margin: 0 0.32rem">
+            <van-panel v-if="detail.ship_status==2"  title="快递单号" :desc="detail.tracking_number" style="margin: 0 0.32rem">
             </van-panel>
         </div>
     </div>
